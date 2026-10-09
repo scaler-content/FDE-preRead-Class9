@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Class 9 — Making a Save Trustworthy</title>
+<style>
+:root {
+  --ink: #203a5b;
+  --teal: #0f766e;
+  --amber: #d97706;
+  --paper: #ffffff;
+  --muted: #596575;
+  --pale-blue: #eef4f8;
+  --pale-teal: #e7f4f1;
+  --pale-amber: #fff4df;
+  --pale-red: #faece9;
+  --line: #dce4ea;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f1f4f6;
+  color: #27313d;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.7;
+}
+main { max-width: 980px; margin: 0 auto; padding: 32px 20px; }
+.page {
+  background: var(--paper);
+  margin: 0 auto 28px;
+  padding: 58px clamp(24px, 7vw, 76px) 54px;
+  box-shadow: 0 6px 24px rgba(20, 40, 60, .08);
+  min-height: 900px;
+  display: flex;
+  flex-direction: column;
+}
+.page-content { flex: 1; }
+.eyebrow {
+  color: var(--teal);
+  font-size: .8rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+h1 {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 5vw, 3.6rem);
+  line-height: 1.1;
+  margin: .2rem 0 .4rem;
+}
+h2 {
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  margin: 2rem 0 .55rem;
+}
+h3 { color: var(--ink); margin: 1.1rem 0 .3rem; }
+p { margin: .65rem 0 1rem; }
+blockquote {
+  border-left: 5px solid var(--teal);
+  margin: 1.25rem 0;
+  padding: .2rem 0 .2rem 1rem;
+  color: var(--ink);
+  font: italic 1.2rem/1.5 Georgia, serif;
+}
+.callout {
+  border-left: 5px solid var(--amber);
+  background: var(--pale-amber);
+  padding: 1rem 1.2rem;
+  margin: 1.25rem 0;
+}
+.warning {
+  border-top: 3px solid #b85b4d;
+  background: var(--pale-red);
+  padding: .9rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .7rem;
+  margin: 1.2rem 0;
+}
+.timeline article { background: var(--pale-blue); padding: .85rem; border-top: 3px solid var(--teal); }
+.timeline article:last-child { background: var(--pale-amber); border-color: var(--amber); }
+pre {
+  background: #1f2b39;
+  color: #f6f8fb;
+  border-radius: 4px;
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+}
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; }
+th { background: var(--ink); color: white; text-align: left; }
+th, td { padding: .8rem; border: 1px solid var(--line); vertical-align: top; }
+tbody tr:nth-child(even) { background: #f5f7f9; }
+.question {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  background: var(--pale-amber);
+  margin: .5rem 0;
+}
+.question .number {
+  background: var(--ink);
+  color: white;
+  display: grid;
+  place-items: center;
+  font: bold 1.6rem Georgia, serif;
+}
+.question .body { padding: .8rem 1rem; }
+.question-label { color: var(--amber); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+footer {
+  border-top: 1px solid var(--line);
+  padding-top: .8rem;
+  color: var(--muted);
+  font-size: .78rem;
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 620px) {
+  main { padding: 12px 8px; }
+  .page { min-height: 0; padding: 30px 22px; margin-bottom: 14px; }
+  .warning, .timeline { grid-template-columns: 1fr; }
+  h2 { font-size: 1.5rem; }
+}
+@media print {
+  body { background: white; }
+  main { max-width: none; padding: 0; }
+  .page { box-shadow: none; margin: 0; min-height: 0; page-break-after: always; padding: 18mm; }
+  .page:last-child { page-break-after: auto; }
+}
+</style>
+</head>
+<body>
+<main>
+
+      <section class="page" aria-label="Page 1">
+        <div class="page-content">
+          <p>PRE-READ  · FOURTH SQL CLASS</p><h1>Class 9</h1><p>Making a save trustworthy When several changes make up one decision, and several people can act, what makes a save trustworthy?</p><h2>One button, two changes</h2><p>A Meridian reviewer opens a pending support case, reads the evidence and chooses NEEDS_INFO.</p><p>They press Save. On the screen, that is one action.</p><p>Inside the database, it is two. The case itself must now show that it has been reviewed, along with</p><p>the decision. Separately, the review history must record who made that decision. One row describes</p><p>where the case stands now. The other records the event that put it there.</p><p>Now imagine only one of them happens.</p><p>HALF-SAVE 1                                          HALF-SAVE 2 The case says REVIEWED                 A review event exists</p><p>But no review event exists. Nobody can say who       But the case still says PENDING. The next reviewer made the decision or when.                    may pick it up again.</p><p>Each row looks plausible on its own. Read together, they tell a story that doesn’t add up.</p><p>Would you be comfortable telling the user that this save is complete?</p><p>Think of a bank transfer. Taking money out of one account and putting it into another are one</p><p>transfer. Nobody calls it complete just because the money was taken out. In Class 9, updating the</p><p>case and recording the review belong together in the same way.</p><h2>Seeing a change is not the same as accepting it</h2><p>Up to now, every statement we ran was saved the moment it succeeded. That works when one</p><p>statement is the whole job. It stops working when the job needs two.</p>
+        </div>
+        <footer>Class 9 · Pre-read <span>1</span></footer>
+      </section>
+    
+
+      <section class="page" aria-label="Page 2">
+        <div class="page-content">
+          <h3>An Analogy</h3><p>Think of packing a parcel before it is sent out. While you are packing, you can:</p><p>▸​ look inside and check what is there,</p><p>▸​ swap something out, or</p><p>▸​ abandon the parcel entirely.</p><p>Once the parcel has gone out, “cancel packing” does not bring it back. Fixing it now takes a</p><p>new, deliberate action.</p><p>A database gives us the same two stages. We can group changes, inspect them, and then either</p><p>accept the whole group or cancel the whole group. Your own screen may show a change that the</p><p>database has not accepted yet. Seeing it and accepting it are two different facts.</p><p>We will also try the uncomfortable path. The first change succeeds and the second one fails. Should</p><p>we keep the first change because it worked? Or should we cancel the whole attempt because the</p><p>action is incomplete?</p><h2>Two reviewers, two old photocopies</h2><p>Now add a second person. Reviewers A and B are both authorised, and both open the same pending</p><p>case.</p><p>10:00                                  10:01                                  10:03 Both open the case         A saves NEEDS_INFO         B saves from the old screen</p><p>Each screen correctly shows        Complete and correct. The real       B’s screen still says PENDING. B PENDING.                         record now says REVIEWED.        chooses READY_FOR_HANDOFF.</p><p>B’s screen hasn’t updated itself. It is a faithful copy of 10:00, like a photocopy of the office register.</p><p>Both saves are complete, every ID is valid, and no statement fails. Even so, B quietly replaces A’s</p><p>accepted decision.</p><p>Every query succeeded. So what went wrong?</p><p>Meridian’s rule is that once a review is accepted, a decision made from an older screen must not</p><p>silently replace it. That rule did not come from SQL. The product team decided it. Our job is to make</p><p>the save enforce it.</p>
+        </div>
+        <footer>Class 9 · Pre-read <span>2</span></footer>
+      </section>
+    
+
+      <section class="page" aria-label="Page 3">
+        <div class="page-content">
+          <h2>A number that travels with the case</h2><p>One way to catch the old photocopy is to number each copy. The case carries a version number,</p><p>which starts at 1 and goes up every time an accepted change is made. When A saves, the case moves</p><p>to version 2. B is still holding version 1.</p><p>The save then asks one extra question at the very moment it writes:</p><pre><code>UPDATE lab_cases</code></pre><pre><code>SET    review_status = &#x27;REVIEWED&#x27;, ...</code></pre><pre><code>WHERE  case_id = &#x27;C9-DEMO&#x27;</code></pre><p>AND  version = 1 AND  review_status = &#x27;PENDING&#x27;;</p><p>In plain words: change this case only if it is still the version I opened, and it is still pending.</p><p>If nothing matches, nothing changes. That is not an error. It is a useful result: the case changed while</p><p>you were looking at it. The reviewer sees a clear message and looks again, rather than overwriting</p><p>someone else’s work.</p><h3>Worth Noticing</h3><p>A version number doesn’t judge which decision is better. It only answers one question: “Is the</p><p>stored case still the one I reviewed?” Fetching the newest number behind the scenes just to</p><p>push an old decision through would defeat the point.</p><h2>Words you will hear</h2><p>You don’t need to memorise these before class. Each one will be attached to something you have</p><p>already watched happen.</p><p>YOU WILL HEAR                   IN PLAIN WORDS</p><p>Transaction             A group of changes treated as one unit: accepted together or cancelled together.</p><p>COMMIT                   Accept the changes in this group.</p><p>ROLLBACK                  Cancel the changes in this group that have not been accepted yet.</p><p>ACID                      Four names for the guarantees a transaction gives. Class 9 attaches each name to something you have already seen happen.</p><p>Version check              Save only if the record is still the version you opened. Sometimes called optimistic concurrency.</p><p>Row lock                   Reserve the record briefly while saving, then check it again. Sometimes called the pessimistic approach.</p>
+        </div>
+        <footer>Class 9 · Pre-read <span>3</span></footer>
+      </section>
+    
+
+      <section class="page" aria-label="Page 4">
+        <div class="page-content">
+          <h2>What will Class 9 do?</h2><p>Class 9 uses a deliberately small lab with two tables: one holds a case’s current state, the other holds</p><p>its accepted reviews. With so little schema, the behaviour is easy to see. You will:</p><p>✓​Define what one complete save means when it needs more than one change.</p><p>✓​Make a change, inspect it, cancel it, then make it again and accept it.</p><p>✓​See why a failed second step must cancel the whole attempt.</p><p>✓​Watch two reviewers overwrite each other, even though every query succeeds.</p><p>✓​Add a version check, then practise both outcomes: one row saved, zero rows saved.</p><p>✓​Compare that approach with briefly reserving the record while saving.</p><p>A small setup step, if you have MySQL Workbench: go to Edit → Preferences → SQL Editor</p><p>and turn on Stop Script Execution On Errors. This stops a script from carrying on, and saving</p><p>half an action, after one of its statements fails.</p><h2>What to bring to class</h2><p>Nothing to submit. Bring three questions in your head.</p><h3 class='question-label'>Completeness</h3><p>If a save updates the case but fails to record who made the decision, has anything  1 been saved? What should the user be told?</p><h3 class='question-label'>Freshness</h3><p>Your screen was correct when you opened it. Is it still safe to save from it ten 2 minutes later? How would you know?</p><h3 class='question-label'>Ownership</h3><p>Who should decide whether a completed review can be changed later: the database, 3 or the business?</p><p>In Class 8, we improved what the Meridian database could represent. Class 9 asks what happens</p><p>when somebody actually saves a decision, and how to make sure that save is complete, current and</p><p>honest about what it did.</p><p>See you there.</p>
+        </div>
+        <footer>Class 9 · Pre-read <span>4</span></footer>
+      </section>
+    
+</main>
+</body>
+</html>
